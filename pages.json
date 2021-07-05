@@ -1,0 +1,133 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/shop/ShopDetail",
+			"style": {
+				// "navigationBarTitleText": "商品详情",
+				"navigationStyle":"custom"
+			}
+		},
+		{                                                                                                                      
+			"path": "pages/shop/Shop",
+			"style": {
+				"navigationBarTitleText": "uni-app",
+				"navigationStyle":"custom"
+			}
+		},
+		{
+			"path": "pages/order/Order",
+			"style": {
+				// "navigationBarTitleText": "我的订单",
+			}
+		},
+		{
+			"path": "pages/order/WriteOrder",
+			"style": {
+				// "navigationBarTitleText": "填写订单"
+			}
+		},
+		{
+			"path": "pages/order/OrderDetail",
+			"style": {
+				// "navigationBarTitleText": "订单详情"
+			}
+		},
+		{
+			"path": "pages/me/Me",
+			"style": {
+				// "navigationBarTitleText": "我的",
+				 "navigationStyle":"custom"
+			}
+		},
+		{
+			"path": "pages/me/CollectShops",
+			"style": {
+				// "navigationBarTitleText": "商品收藏"
+			}
+		},
+		{
+			"path": "pages/address/AddressManage",
+			"style": {
+				// "navigationBarTitleText": "地址管理"
+			}
+		},
+		{
+			"path": "pages/address/SetAddress",
+			"style": {
+				// "navigationBarTitleText": "修改地址"
+			}
+		},
+		{
+			"path": "pages/coupon/Coupon",
+			"style": {
+				// "navigationBarTitleText": "我的优惠券"
+			}
+		},
+		{
+			"path": "pages/service/Service",
+			"style": {
+				// "navigationBarTitleText": "售后"
+			}
+		},
+		{
+			"path": "pages/service/ServiceDetail",
+			"style": {
+				// "navigationBarTitleText": "售后详情"
+			}
+		},
+		{
+			"path": "pages/service/InServiceFlow",
+			"style": {
+				// "navigationBarTitleText": "退款流程"
+			}
+		},
+		{
+			"path": "pages/me/Captial",
+			"style": {
+				// "navigationBarTitleText": "我的钱包"
+			}
+		},
+		{
+			"path": "pages/accountDetail/AccountDetail",
+			"style": {
+				// "navigationBarTitleText": ""
+			}
+		}
+		
+	],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationStyle":"custom"
+	},
+	"easycom": {
+		"^u-(.*)": "@/uview-ui/components/u-$1/u-$1.vue"
+	},
+	"tabBar": {
+		"color":"#8a8a8a",
+		"selectedColor":"#f23030",
+		"borderStyle":"white",
+		"backgroundColor":"#ffffff",
+		"fontSize":"11px",
+		"spacing":"0",
+		"list": [
+			{
+				"pagePath":"pages/shop/ShopDetail",
+				"text":"商品",
+				"iconPath":"static/image/common/shop.png",
+				"selectedIconPath":"static/image/common/shop_active.png"
+			},
+			{
+				"pagePath":"pages/order/Order",
+				"text":"订单",
+				"iconPath":"static/image/common/order.png",
+				"selectedIconPath":"static/image/common/order_active.png"
+			},
+			{
+				"pagePath":"pages/me/Me",
+				"text":"我的",
+				"iconPath":"static/image/common/me.png",
+				"selectedIconPath":"static/image/common/me_active.png"
+			}
+		]	
+	}
+}

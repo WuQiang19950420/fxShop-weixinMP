@@ -1,0 +1,16 @@
+{
+  "id": "2548218",
+  "name": "Vshop",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "13153909",
+      "name": "减",
+      "font_class": "jian",
+      "unicode": "e600",
+      "unicode_decimal": 58880
+    }
+  ]
+}

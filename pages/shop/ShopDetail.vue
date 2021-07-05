@@ -1,0 +1,170 @@
+<template>
+	<main class="shop-detail" :style = "{'padding-top':iphoneHeight + 'px'}">
+		<template v-if="isMpWxLogin === '1'">
+			<u-navbar title="商品详情" :is-back = "false"></u-navbar>
+			<shop-swiper :goodsDetailImg="goodsDetailImg"></shop-swiper>
+			<shop-buy-area :goodsDetail="goodsDetail" :goods="goods"></shop-buy-area>
+			<!-- 		<shop-discount></shop-discount> -->
+			<shop-fast-mail-specs :address="address" @buy="buy"></shop-fast-mail-specs>
+			<!-- 		<shop-assess></shop-assess> -->
+			<look-more-shop-detail>
+				<p>宝贝详情</p>
+			</look-more-shop-detail>
+			<shop-detail-img :goodsDetailImg="goods.body"></shop-detail-img>
+			<div class="box"></div>
+			<pay-fixed>
+				<button @click="pay" class="pay-btn">立即购买</button>
+			</pay-fixed>
+			<u-popup v-model="show" mode="bottom" border-radius="18" height="900rpx">
+				<shops-pop :goodsDetail="goodsDetail" :goods="goods" :goodsDetailImg="goodsDetailImg"></shops-pop>
+			</u-popup>
+			<u-toast ref="uToast" />
+		</template>
+		<template v-else>
+			<MpWxLogin @getShopDetail="getShopDetail" />
+		</template>
+	</main>
+</template>
+
+<script>
+	import ShopSwiper from './common/ShopSwiper.vue'
+	import ShopBuyArea from './common/ShopBuyArea.vue'
+	import ShopDiscount from './common/ShopDiscount.vue'
+	import ShopFastMailSpecs from './common/ShopFastMailSpecs.vue'
+	import ShopAssess from './common/ShopAssess.vue'
+	import LookMoreShopDetail from '../common/LookMoreShopDetail.vue'
+	import ShopDetailImg from './common/ShopDetailImg.vue'
+	import PayFixed from '../common/PayFixed.vue'
+	import ShopsPop from './common/ShopsPop.nvue'
+	import MpWxLogin from './MpWxLogin.vue'
+	
+	// import isIPhoneMixin from '../common/IsIphone.js'
+	import {getShops,getLogin} from '../network/Login.js'
+	import {getAddress} from '../network/getAddress.js'
+
+	export default {
+		components: {
+			ShopSwiper,
+			ShopBuyArea,
+			ShopDiscount,
+			ShopFastMailSpecs,
+			ShopAssess,
+			ShopDetailImg,
+			LookMoreShopDetail,
+			PayFixed,
+			ShopsPop,
+			MpWxLogin
+		},
+		// mixins:[isIPhoneMixin],
+		data() {
+			return {
+				show: false, //弹出框 默认不弹出
+				goodsDetail: null,
+				goodsDetailImg: [],
+				goods: {},
+				address: '',
+				uid: '', //上个用户uid
+				isMpWxLogin:'0',
+				showNavbar:false,
+				myUid:'',
+				shareMsg:{
+					imgUrl:'',
+					title:'',
+					desc:''					
+				}
+			}
+		},
+		onLoad(options) {
+			if(options.id){
+				this.uid = options.id
+			}
+		},
+		onShow(){
+			if(uni.getStorageSync('isMpWxLogin') === '1'){
+				this.getShops()
+				this.isMpWxLogin = '1'
+				uni.showTabBar()
+			}else{
+				this.isMpWxLogin = '0'
+				uni.hideTabBar()
+			}
+		},
+		methods: {
+			onShareAppMessage() {
+				 return {
+				  title:this.shareMsg.title,
+				  desc: this.shareMsg.desc,
+				  path: `/pages/shop/ShopDetail?id=${this.myUid}`,
+				  imageUrl:this.shareMsg.imgUrl
+				 }
+			},
+			getShopDetail() {
+				this.getShops()
+				uni.showTabBar()
+				this.isMpWxLogin = uni.getStorageSync('isMpWxLogin')
+			},
+			buy() {
+				this.show = true
+			},
+			pay() {
+				this.show = true
+			},
+			getShops() {
+				let data = {
+					uid: this.uid,
+					gid: 1,
+					tranType: 1
+				}
+				getShops(data).then(res => {
+					let goodsDetail = JSON.parse(res.data.wdDetail)
+					let cuser = JSON.parse(res.data.cuser)
+					this.goods = JSON.parse(res.data.wGoods)
+					this.goodsDetailImg = this.goods.resv2.split('|')
+					this.goodsDetail = goodsDetail
+					this.myUid = cuser.uid
+					this.shareMsg.imgUrl = res.data.imgUrl
+					this.shareMsg.desc = res.data.desc
+					this.shareMsg.title = res.data.title
+					this.getAddress()
+				})
+			},
+			getAddress() {
+				getAddress().then(res => {
+					let address = JSON.parse(res.data.address)
+					if (address) {
+						//如果右有默认地址就显示默认 没有就显示第一个
+						for (let i = 0; i < address.length; i++) {
+							if (address[i].isDefault == 1) {
+								this.address = address[i].address
+							} else {
+								this.address = address[0].address
+							}
+						}
+					} else {
+						this.address.text = '地址栏占无地址'
+					}
+				})
+			}
+		}
+	}
+</script>
+
+<style lang="scss" scoped>
+	.shop-detail {
+		p{
+			color: $uni-text-color-grey;
+			font-size: 26rpx;
+			margin: 0 28rpx;
+		}
+		.pay-btn {
+			width: 200rpx;
+			height: 76rpx;
+			background-image: $pay-button;
+			border-radius: 40rpx;
+			color: #FFFFFF;
+			text-align: center;
+			line-height: 76rpx;
+			font-size: 28rpx;
+		}
+	}
+</style>
