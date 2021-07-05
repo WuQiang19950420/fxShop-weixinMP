@@ -1,2 +1,1 @@
-# fxShop
 # fxShop-MPweixin
