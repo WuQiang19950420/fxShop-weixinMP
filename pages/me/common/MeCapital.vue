@@ -2,15 +2,15 @@
 	<article class = "me-order">
 		<div class = "me-order-icon">
 			<div>
-				<span>￥{{userData.amt}}</span>
+				<span>￥{{userData.amt || 0}}</span>
 				<span>余额</span>
 			</div>
 			<div>
-				<span>￥{{userData.frozenAmt}}</span>
+				<span>￥{{userData.frozenAmt || 0}}</span>
 				<span>冻结金额</span>
 			</div>
 			<div>
-				<span>￥{{userData.settlementAmt}}</span>
+				<span>￥{{userData.settlementAmt || 0}}</span>
 				<span>待结算</span>
 			</div>
 			<div @click = "goCaptial">
@@ -33,10 +33,16 @@
 		},
 		methods:{
 			goCaptial(){
-				let userData = JSON.stringify(this.userData)
-				uni.navigateTo({
-					url:`/pages/me/Captial?userData=${userData}`
-				})
+				if(wx.getStorageSync('token')){
+					let userData = JSON.stringify(this.userData)
+					uni.navigateTo({
+						url:`/pages/me/Captial?userData=${userData}`
+					})
+				}else{
+					uni.redirectTo({
+						url:'../login/MpWxLogin'
+					})
+				}
 			}
 		}
 	}

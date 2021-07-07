@@ -92,6 +92,12 @@
 			"style": {
 				// "navigationBarTitleText": ""
 			}
+		},
+		{
+			"path": "pages/login/MpWxLogin",
+			"style": {
+				// "navigationBarTitleText": ""
+			}
 		}
 		
 	],

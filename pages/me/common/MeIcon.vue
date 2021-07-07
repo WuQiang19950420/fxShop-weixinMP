@@ -41,15 +41,27 @@
 	export default{
 		methods:{
 			goAddressManage(){
-				this.$store.commit('getAddressBack',1)
-				uni.navigateTo({
-					url:'/pages/address/AddressManage'
-				})
+				if(wx.getStorageSync('token')){
+					this.$store.commit('getAddressBack',1)
+					uni.navigateTo({
+						url:'/pages/address/AddressManage'
+					})
+				}else{
+					uni.redirectTo({
+						url:'../login/MpWxLogin'
+					})
+				}
 			},
 			godetail(){
-				uni.navigateTo({
-					url:'/pages/accountDetail/AccountDetail'
-				})	
+				if(wx.getStorageSync('token')){
+					uni.navigateTo({
+						url:'/pages/accountDetail/AccountDetail'
+					})
+				}else{
+					uni.redirectTo({
+						url:'../login/MpWxLogin'
+					})
+				}	
 			}
 		}
 	}

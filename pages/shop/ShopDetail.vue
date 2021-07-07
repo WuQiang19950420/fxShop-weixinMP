@@ -1,28 +1,23 @@
 <template>
 	<main class="shop-detail" :style = "{'padding-top':iphoneHeight + 'px'}">
-		<template v-if="isMpWxLogin === '1'">
-			<u-navbar title="商品详情" :is-back = "false"></u-navbar>
-			<shop-swiper :goodsDetailImg="goodsDetailImg"></shop-swiper>
-			<shop-buy-area :goodsDetail="goodsDetail" :goods="goods"></shop-buy-area>
-			<!-- 		<shop-discount></shop-discount> -->
-			<shop-fast-mail-specs :address="address" @buy="buy"></shop-fast-mail-specs>
-			<!-- 		<shop-assess></shop-assess> -->
-			<look-more-shop-detail>
-				<p>宝贝详情</p>
-			</look-more-shop-detail>
-			<shop-detail-img :goodsDetailImg="goods.body"></shop-detail-img>
-			<div class="box"></div>
-			<pay-fixed>
-				<button @click="pay" class="pay-btn">立即购买</button>
-			</pay-fixed>
-			<u-popup v-model="show" mode="bottom" border-radius="18" height="900rpx">
-				<shops-pop :goodsDetail="goodsDetail" :goods="goods" :goodsDetailImg="goodsDetailImg"></shops-pop>
-			</u-popup>
-			<u-toast ref="uToast" />
-		</template>
-		<template v-else>
-			<MpWxLogin @getShopDetail="getShopDetail" />
-		</template>
+		<u-navbar title="商品详情" :is-back = "false"></u-navbar>
+		<shop-swiper :goodsDetailImg="goodsDetailImg"></shop-swiper>
+		<shop-buy-area :goodsDetail="goodsDetail" :goods="goods"></shop-buy-area>
+		<!-- 		<shop-discount></shop-discount> -->
+		<shop-fast-mail-specs :address="address" @buy="buy"></shop-fast-mail-specs>
+		<!-- 		<shop-assess></shop-assess> -->
+		<look-more-shop-detail>
+			<p>宝贝详情</p>
+		</look-more-shop-detail>
+		<shop-detail-img :goodsDetailImg="goods.body"></shop-detail-img>
+		<div class="box"></div>
+		<pay-fixed>
+			<button @click="pay" class="pay-btn">立即购买</button>
+		</pay-fixed>
+		<u-popup v-model="show" mode="bottom" border-radius="18" height="900rpx">
+			<shops-pop :goodsDetail="goodsDetail" :goods="goods" :goodsDetailImg="goodsDetailImg"></shops-pop>
+		</u-popup>
+		<u-toast ref="uToast" />
 	</main>
 </template>
 
@@ -36,10 +31,10 @@
 	import ShopDetailImg from './common/ShopDetailImg.vue'
 	import PayFixed from '../common/PayFixed.vue'
 	import ShopsPop from './common/ShopsPop.nvue'
-	import MpWxLogin from './MpWxLogin.vue'
 	
 	// import isIPhoneMixin from '../common/IsIphone.js'
-	import {getShops,getLogin} from '../network/Login.js'
+	import {getLogin} from '../network/Login.js'
+	import {getShops} from '../network/getWgoods.js'
 	import {getAddress} from '../network/getAddress.js'
 
 	export default {
@@ -52,8 +47,7 @@
 			ShopDetailImg,
 			LookMoreShopDetail,
 			PayFixed,
-			ShopsPop,
-			MpWxLogin
+			ShopsPop
 		},
 		// mixins:[isIPhoneMixin],
 		data() {
@@ -63,8 +57,6 @@
 				goodsDetailImg: [],
 				goods: {},
 				address: '',
-				uid: '', //上个用户uid
-				isMpWxLogin:'0',
 				showNavbar:false,
 				myUid:'',
 				shareMsg:{
@@ -76,17 +68,11 @@
 		},
 		onLoad(options) {
 			if(options.id){
-				this.uid = options.id
+				this.$store.commit('getUid',options.id)
 			}
-		},
-		onShow(){
-			if(uni.getStorageSync('isMpWxLogin') === '1'){
-				this.getShops()
-				this.isMpWxLogin = '1'
-				uni.showTabBar()
-			}else{
-				this.isMpWxLogin = '0'
-				uni.hideTabBar()
+			this.getShops()
+			if(wx.getStorageSync('token')){
+				this.getAddress() 
 			}
 		},
 		methods: {
@@ -98,11 +84,6 @@
 				  imageUrl:this.shareMsg.imgUrl
 				 }
 			},
-			getShopDetail() {
-				this.getShops()
-				uni.showTabBar()
-				this.isMpWxLogin = uni.getStorageSync('isMpWxLogin')
-			},
 			buy() {
 				this.show = true
 			},
@@ -111,21 +92,25 @@
 			},
 			getShops() {
 				let data = {
-					uid: this.uid,
-					gid: 1,
-					tranType: 1
+					uid: this.$store.state.uid || ' ',
+					gid: 1
 				}
 				getShops(data).then(res => {
+					console.log(res)
 					let goodsDetail = JSON.parse(res.data.wdDetail)
-					let cuser = JSON.parse(res.data.cuser)
 					this.goods = JSON.parse(res.data.wGoods)
 					this.goodsDetailImg = this.goods.resv2.split('|')
 					this.goodsDetail = goodsDetail
-					this.myUid = cuser.uid
-					this.shareMsg.imgUrl = res.data.imgUrl
-					this.shareMsg.desc = res.data.desc
-					this.shareMsg.title = res.data.title
-					this.getAddress()
+					if(res.data.sessionId){
+						wx.setStorageSync('sessionId',res.data.sessionId)
+					}
+					if(res.data.cuser && res.data.imgUrl && res.data.desc && res.data.title){
+						let cuser = JSON.parse(res.data.cuser)
+						this.myUid = cuser.uid
+						this.shareMsg.imgUrl = res.data.imgUrl
+						this.shareMsg.desc = res.data.desc
+						this.shareMsg.title = res.data.title
+					}
 				})
 			},
 			getAddress() {

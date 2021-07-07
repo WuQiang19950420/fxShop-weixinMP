@@ -7,12 +7,16 @@ export function request(config) {
     baseURL: "http://yhltest001.vaiwan.com",
     timeout: 5000,
 	headers: {
-		"token": wx.getStorageSync("token")
+		"token": wx.getStorageSync("token"),
+		"sessionId":wx.getStorageSync('sessionId')
 	}
   })
   // 2.axios的拦截器
   // 2.1.请求拦截的作用
   instance.interceptors.request.use(config => {
+	  // const token = wx.getStorageSync('token')
+	  // console.log(token)
+	  // token && (config.headers['token'] = token)
 	return config
   }, err => {
     console.log(err);
@@ -21,10 +25,9 @@ export function request(config) {
   // 2.2.响应拦截
  instance.interceptors.response.use(res => {
 	if(res.data.code === -2){
-		uni.setStorageSync('isMpWxLogin','0')
 		setTimeout(() => {
 			uni.switchTab({
-				url:"/pages/shop/ShopDetail"
+				url:"/pages/login/MpWxLogin.vue"
 			})
 		},800)
 	}

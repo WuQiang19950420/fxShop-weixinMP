@@ -52,9 +52,15 @@
 				})
 			},
 			goWaitAfterMarket(){
-				uni.navigateTo({
-					url:'/pages/service/Service'
-				})
+				if(wx.getStorageSync('token')){
+					uni.navigateTo({
+						url:'/pages/service/Service'
+					})
+				}else{
+					uni.redirectTo({
+						url:'../login/MpWxLogin'
+					})
+				}	
 			},
 			goAllOrder(){
 				uni.setStorageSync('indexs', 0);

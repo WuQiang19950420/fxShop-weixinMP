@@ -1,15 +1,28 @@
 <template>
 	<article class = "me-header" :style = "{'padding-top':iphoneHeight + 'px'}">
 		<header>
-			<div class = "me-header-left">
-				<div class = "user-img">
-					<img :src = "userData.headUrl">
+			<template v-if = "isShowUser">
+				<div class = "me-header-left">
+					<div class = "user-img">
+						<img :src = "userData.headUrl">
+					</div>
+					<div class = "user-name">
+						<h3>{{userData.wxname}}</h3>
+						<span>普通会员</span>
+					</div>
 				</div>
-				<div class = "user-name">
-					<h3>{{userData.wxname}}</h3>
-					<span>普通会员</span>
+			</template>
+			<template v-else>
+				<div class = "me-header-left" @click = "login">
+					<div class = "user-img">
+						<img src = "/static/image/login/logo.jpg">
+					</div>
+					<div class = "no-login-text">
+						<h3>登陆/注册</h3>
+					</div>
 				</div>
-			</div>
+			</template>
+
 <!-- 			<div class = "me-header-right">
 				<img src = "/static/image/me/section.png">
 			</div> -->
@@ -41,15 +54,19 @@
 		},
 		data(){
 			return {
-				iphoneHeight:44
+				iphoneHeight:44,
+				isShowUser:null
 			}	
 		},
+		created() {
+			this.isShowUser = wx.getStorageSync('token')
+		},
 		methods:{
-			// goCollectShops(){
-			// 	uni.navigateTo({
-			// 		url:'/pages/me/CollectShops'
-			// 	})
-			// }
+			login(){
+				uni.navigateTo({
+					url:"/pages/login/MpWxLogin"
+				})
+			}
 		}
 	}
 </script>
@@ -77,6 +94,19 @@
 						width: 100%;
 						height: 100%;
 						border-radius: 50%;
+					}
+				}
+				.no-login-text{
+					color: #FFFFFF;
+					font-size: 34rpx;
+					margin-left: 20rpx;
+					h3{
+						&:after{
+							content: '>';
+							width: 30rpx;
+							height: 30rpx;
+							margin-left: 10rpx;
+						}
 					}
 				}
 				.user-name{

@@ -65,14 +65,21 @@
 			}
 		},
 		onShow(){
-			uni.getStorageSync('indexs')?this.tabIndex = uni.getStorageSync('indexs'):this.tabIndex = 0
-			this.currentPage = 1
-			this.orderItem = []
-			this.show = false
-			this.isEnd = false
-			this.emptyShow = false
-			this.status = 'loadmore'
-			this.getOrder()
+			if(wx.getStorageSync('token')){
+				uni.getStorageSync('indexs')?this.tabIndex = uni.getStorageSync('indexs'):this.tabIndex = 0
+				this.currentPage = 1
+				this.orderItem = []
+				this.show = false
+				this.isEnd = false
+				this.emptyShow = false
+				this.status = 'loadmore'
+				this.getOrder()
+			}else{
+				uni.redirectTo({
+					url:'../login/MpWxLogin'
+				})
+			}
+
 		},
 		onHide(){
 			//页面消失 删除缓存

@@ -102,16 +102,22 @@
 				this.increamActive == true?false:true
 			},
 			pay() {
-				if (this.shopsCount == 0) {
-					this.$refs.uToast.show({
-						title: '输入商品数'
-					})
-				} else {
-					let goodsDetail = encodeURIComponent(JSON.stringify(this.productDetail))
-					let goods = encodeURIComponent(JSON.stringify(this.goods))
-					let userCount = parseInt(this.shopsCount)
-					uni.navigateTo({
-						url: `/pages/order/WriteOrder?goodsDetail=${goodsDetail}&goods=${goods}&userCount=${userCount}`
+				if(wx.getStorageSync('token')){
+					if (this.shopsCount == 0) {
+						this.$refs.uToast.show({
+							title: '输入商品数'
+						})
+					} else {
+						let goodsDetail = encodeURIComponent(JSON.stringify(this.productDetail))
+						let goods = encodeURIComponent(JSON.stringify(this.goods))
+						let userCount = parseInt(this.shopsCount)
+						uni.navigateTo({
+							url: `/pages/order/WriteOrder?goodsDetail=${goodsDetail}&goods=${goods}&userCount=${userCount}`
+						})
+					}
+				}else{
+					uni.redirectTo({
+						url:'../login/MpWxLogin'
 					})
 				}
 			},

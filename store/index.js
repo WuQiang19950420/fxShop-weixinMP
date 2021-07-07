@@ -6,7 +6,8 @@ Vue.use(Vuex)
 const store =  new Vuex.Store({
   state: {
 	tabsIndex:null,
-	addressBack:null
+	addressBack:null,
+	uid:null
   },
 
   mutations: {
@@ -15,6 +16,9 @@ const store =  new Vuex.Store({
 	  },
 	  getAddressBack(state,addressBack){
 		   state.addressBack = addressBack
+	  },
+	  getUid(state,uid){
+		  state.uid = uid
 	  }
   },
   actions: {

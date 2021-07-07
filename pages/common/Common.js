@@ -20,11 +20,9 @@ export function getMpWxToken(loginErro,loginSuccess){
 					getLogin(data).then(res => {
 							if(res.data.code === 1){
 								wx.setStorageSync('token',res.data.token)
-								wx.setStorageSync('isMpWxLogin','1')
 								loginSuccess()
 							}else{
 								loginErro()
-								wx.setStorageSync('isMpWxLogin','0')
 						}
 					})
 				}

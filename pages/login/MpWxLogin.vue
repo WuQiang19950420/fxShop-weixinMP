@@ -1,5 +1,6 @@
 <template>
 	  <view class='headView'>
+		<u-navbar title="登陆" :background="background" :border-bottom = "false" :custom-back = "setLoginBack"></u-navbar>
 		<view class= "margin-middle">
 		    <view class='headImageView'>
 			      <img class='headImage' src = "/static/image/login/logo.jpg"></img>
@@ -16,7 +17,19 @@
 <script>
 	import {getMpWxToken} from '../common/Common.js'
 	export default{
+		data(){
+			return{
+				background:{
+					backgroundColor:'#f2f2f2'
+				}
+			}
+		},
 		methods:{
+			setLoginBack(){
+				uni.switchTab({
+					url:'../shop/ShopDetail'
+				})
+			},
 			loginClick(){
 				getMpWxToken(this.loginErro,this.loginSuccess)
 			},
@@ -24,7 +37,12 @@
 				this.$refs.uToast.show({title: '登录失败'})
 			},
 			loginSuccess(){
-				this.$emit('getShopDetail')
+				this.$refs.uToast.show({title: '登录成功'})
+				setTimeout(() => {
+					uni.reLaunch({
+						url:'../shop/ShopDetail'
+					})
+				},300)
 			}
 		}
 	}
