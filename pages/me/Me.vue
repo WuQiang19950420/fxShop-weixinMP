@@ -1,6 +1,6 @@
 <template>
 	<main>
-		<me-header :userData = "userData"></me-header>
+		<me-header :userData = "userData" :showUser = "showUser"></me-header>
 		<me-order></me-order>
 		<me-capital :userData = "userData"></me-capital>
 		<me-icon></me-icon>
@@ -31,16 +31,20 @@
 		},
 		data(){
 			return{
-				userData:{}
+				userData:{},
+				showUser:false
 			}
 		},
-		created() {
-			this.getUser()
+		onShow(){
+			if(wx.getStorageSync('token')){
+				this.getUser()
+			}
 		},
 		methods:{
 			getUser(){
 				getUser().then(res => {
 					this.userData = res.data.user
+					this.showUser = true
 				})
 			}
 		}

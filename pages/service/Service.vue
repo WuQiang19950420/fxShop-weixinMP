@@ -92,7 +92,7 @@
 				}
 				getOrder(data).then(res => {
 					if(res.data.code === -2){
-						this.$refs.uToast.show({title: '登陆失效,正在重新登陆至首页'})
+						this.$refs.uToast.show({title: '登陆失效,正在跳转'})
 					}else{
 						this.show = true
 						let data = JSON.parse(res.data.data)
@@ -113,7 +113,6 @@
 								this.isEnd = true
 							}else{
 								this.ServiceItem = this.ServiceItem.concat(data)
-								console.log(this.ServiceItem)
 							}
 						}
 					}

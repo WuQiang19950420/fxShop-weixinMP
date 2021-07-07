@@ -17,7 +17,6 @@
 			AddressItem
 		},
 		onLoad(option){
-			console.log(option)
 			if(option.goodsDetail && option.goods && option.userCount){
 				this.goodsDetail = JSON.parse(decodeURIComponent(option.goodsDetail));
 				this.goods = JSON.parse(decodeURIComponent(option.goods));
@@ -38,7 +37,6 @@
 		methods:{
 			addressManageBack(){
 				if(this.$store.state.addressBack == 1){
-					console.log(1)
 					uni.switchTab({
 						url:"/pages/me/Me"
 					})
@@ -56,7 +54,6 @@
 					token:uni.getStorageSync('token')
 				}
 				getAddress(data).then( res => {
-					console.log(res.data)
 					this.address = JSON.parse(res.data.address)
 				})
 			},
@@ -66,7 +63,6 @@
 				let goodsDetail = encodeURIComponent(JSON.stringify(this.goodsDetail))
 				let goods = encodeURIComponent(JSON.stringify(this.goods))
 				let userCount = parseInt(this.userCount)
-				console.log((this.address[index]))
 				uni.navigateTo({
 					url:`/pages/address/SetAddress?address=${address}&isFlag=0&goodsDetail=${goodsDetail}&goods=${goods}&userCount=${userCount}`
 				})

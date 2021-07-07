@@ -1,5 +1,5 @@
 <template>
-	<main class = "order">
+	<main class = "order" v-if= "isLogin">
 		<u-navbar title="我的订单" :is-back = "false"></u-navbar>
 		<order-tabs @tabsClick = "tabsClick" :current="tabIndex"></order-tabs>
 		<article v-if = "tabIndex == 0" >
@@ -61,7 +61,8 @@
 				status: 'loadmore',
 				isEnd:false,
 				show:false,
-				emptyShow:false
+				emptyShow:false,
+				isLogin:true
 			}
 		},
 		onShow(){
@@ -75,9 +76,13 @@
 				this.status = 'loadmore'
 				this.getOrder()
 			}else{
-				uni.redirectTo({
+				this.isLogin = false
+				uni.navigateTo({
 					url:'../login/MpWxLogin'
 				})
+				setTimeout(() => {
+					this.isLogin = true
+				},1000)
 			}
 
 		},
@@ -132,7 +137,7 @@
 				}
 				getOrder(data).then(res => {
 					if(res.data.code === -2){
-						this.$refs.uToast.show({title: '登陆失效,正在重新登陆至首页'})
+						this.$refs.uToast.show({title: '登陆失效,正在跳转'})
 					}else{
 						this.show = true
 						let data = JSON.parse(res.data.data)

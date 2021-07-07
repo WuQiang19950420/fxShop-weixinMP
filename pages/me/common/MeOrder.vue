@@ -57,7 +57,7 @@
 						url:'/pages/service/Service'
 					})
 				}else{
-					uni.redirectTo({
+					uni.navigateTo({
 						url:'../login/MpWxLogin'
 					})
 				}	

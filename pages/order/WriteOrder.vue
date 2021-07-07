@@ -104,7 +104,7 @@
 				getAddress().then(res => {
 					let address = JSON.parse(res.data.address)
 					if(res.data.code === -2){
-						this.$refs.uToast.show({title: '登陆失效,正在重新登陆至首页'})
+						this.$refs.uToast.show({title: '登陆失效,正在跳转'})
 					}else{
 						if(address.length === 0){
 							this.show = true

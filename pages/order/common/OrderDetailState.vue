@@ -21,11 +21,9 @@
 		},
 		computed:{
 			payState(){
-				console.log(this.goodsDetail)
 				let isDeliver = this.goodsDetail.isDeliver
 				let payStatus = this.goodsDetail.payStatus
 				let refundStatus = this.goodsDetail.refundStatus
-				console.log(!this.goodsDetail.refundStatus)
 				if(isDeliver == 2 && !refundStatus){
 					return '已完成'
 				}else if(isDeliver == 1 && payStatus == 2 && !refundStatus){
@@ -59,9 +57,7 @@
 				}
 				confirmReceipt(data).then(res => {
 					if(res.data.code === -2){
-						this.$refs.uToast.show({title: '登陆失效,正在重新登陆至首页'})
-					}else{
-						console.log(res)
+						this.$refs.uToast.show({title: '登陆失效,正在跳转'})
 					}
 				})
 			},
@@ -71,7 +67,7 @@
 				}
 				againPay(data).then(res => {
 					if(res.data.code === -2){
-						this.$refs.uToast.show({title: '登陆失效,正在重新登陆至首页'})
+						this.$refs.uToast.show({title: '登陆失效,正在跳转'})
 					}else if(res.data.code === 1){
 						wx.requestPayment({
 							timeStamp: res.data.timeStamp,

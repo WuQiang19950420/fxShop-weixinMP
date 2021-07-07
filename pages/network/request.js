@@ -26,8 +26,8 @@ export function request(config) {
  instance.interceptors.response.use(res => {
 	if(res.data.code === -2){
 		setTimeout(() => {
-			uni.switchTab({
-				url:"/pages/login/MpWxLogin.vue"
+			uni.navigateTo({
+				url:"/pages/login/MpWxLogin"
 			})
 		},800)
 	}

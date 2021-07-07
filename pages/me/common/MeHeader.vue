@@ -1,7 +1,7 @@
 <template>
 	<article class = "me-header" :style = "{'padding-top':iphoneHeight + 'px'}">
 		<header>
-			<template v-if = "isShowUser">
+			<template v-if = "showUser">
 				<div class = "me-header-left">
 					<div class = "user-img">
 						<img :src = "userData.headUrl">
@@ -50,16 +50,17 @@
 				default(){
 					return {}
 				}
+			},
+			showUser:{
+				type:Boolean,
+				default:false
 			}
 		},
 		data(){
 			return {
-				iphoneHeight:44,
+				iphoneHeight:70,
 				isShowUser:null
 			}	
-		},
-		created() {
-			this.isShowUser = wx.getStorageSync('token')
 		},
 		methods:{
 			login(){

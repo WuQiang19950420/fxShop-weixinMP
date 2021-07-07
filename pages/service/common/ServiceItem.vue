@@ -57,7 +57,6 @@
 		},
 		computed:{
 			payState(){
-				console.log(this.refundStatus)
 				switch(this.refundStatus){
 					case 0:
 						this.payStateColor = '#f23030'
@@ -81,7 +80,6 @@
 		methods:{
 			rightBtnClick(){
 				if(this.payState == "待退款"){
-					console.log('填写物流单号')
 					this.show = true
 				}
 			},
@@ -96,7 +94,7 @@
 					if(res.data.code == 1){
 						this.$refs.uToast.show({title: '填写成功'})
 					}else if(res.data.code == -2){
-						this.$refs.uToast.show({title: '登陆失效,正在重新登陆至首页'})
+						this.$refs.uToast.show({title: '登陆失效,正在跳转'})
 					}else{
 						this.$refs.uToast.show({title: '填写失败'})
 					}
@@ -104,7 +102,6 @@
 			},
 			confirm(){
 				if(!this.postNumber){
-					console.log(1)
 					this.$refs.uToast.show({title: '物流单号不能为空'})
 					this.show = true
 				}else{

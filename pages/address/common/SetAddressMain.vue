@@ -55,7 +55,6 @@
             // 获取选择的地区转化字符串
             handleGetRegion(region){
 				this.address.city = region.map(item=>item.name).join(' ')
-				console.log(this.address.city)
             },
 			//存储父组件传递过来的地址数据
 			setAddress(){
@@ -64,7 +63,6 @@
 					this.address.telephone = this.addr.phone
 					let addr = this.addr.address.split(',')
 					this.address.street = addr[addr.length - 1]
-					console.log( addr[addr.length - 1])
 					this.address.city = addr.slice(0,addr.length - 1).toString().replace(/,/g," ")	
 				}
 			}

@@ -47,7 +47,7 @@
 						url:'/pages/address/AddressManage'
 					})
 				}else{
-					uni.redirectTo({
+					uni.navigateTo({
 						url:'../login/MpWxLogin'
 					})
 				}
@@ -58,7 +58,7 @@
 						url:'/pages/accountDetail/AccountDetail'
 					})
 				}else{
-					uni.redirectTo({
+					uni.navigateTo({
 						url:'../login/MpWxLogin'
 					})
 				}	

@@ -59,7 +59,6 @@
 					width: 100rpx;
 					height: 100rpx;
 					border-radius: 50%;
-					background-color:red;
 					img{
 						width: 100%;
 						height: 100%;

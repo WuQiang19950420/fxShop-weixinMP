@@ -26,9 +26,14 @@
 		},
 		methods:{
 			setLoginBack(){
-				uni.switchTab({
-					url:'../shop/ShopDetail'
-				})
+				const currenPages = getCurrentPages()
+				if(currenPages[0].route === 'pages/order/Order' || 'pages/shop/ShopDetail'){
+					uni.switchTab({
+						url:'/pages/shop/ShopDetail',
+					})
+				}else{
+					uni.navigateBack()
+				}
 			},
 			loginClick(){
 				getMpWxToken(this.loginErro,this.loginSuccess)
@@ -39,10 +44,8 @@
 			loginSuccess(){
 				this.$refs.uToast.show({title: '登录成功'})
 				setTimeout(() => {
-					uni.reLaunch({
-						url:'../shop/ShopDetail'
-					})
-				},300)
+					uni.navigateBack()
+				},500)
 			}
 		}
 	}

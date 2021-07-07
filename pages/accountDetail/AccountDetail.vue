@@ -72,12 +72,10 @@
 				uni.getSystemInfo({
 					success(res) {
 						clientHeight = res.safeArea.bottom //获取视角高度
-						console.log(clientHeight)
 					}
 				})
 				let query = this.createSelectorQuery()
 				query.select('#scrollView').boundingClientRect((rect) => {
-					console.log(rect.top)
 					scrollViewTop = rect.top
 					this.scrollHeight = clientHeight - scrollViewTop
 				}).exec()
@@ -113,13 +111,11 @@
 					this.startDate = getToday()
 					this.endDate = getToday()
 					this.getAccountDetail()
-					console.log(this.startDate)
 				}else if(index == 1){
 					this.InitializedData()
 					this.startDate = todayweekToday()
 					this.endDate = getToday()
 					this.getAccountDetail()
-					console.log(this.startDate)
 				}else{
 					this.InitializedData()
 					this.startDate = ''
@@ -136,7 +132,7 @@
 				}
 				getAccountDetail(data).then(res => {
 					if(res.data.code === -2){
-						this.$refs.uToast.show({title: '登陆失效,正在重新登陆至首页'})
+						this.$refs.uToast.show({title: '登陆失效,正在跳转'})
 					}else{
 						this.show = true
 						let data = JSON.parse(res.data.data)

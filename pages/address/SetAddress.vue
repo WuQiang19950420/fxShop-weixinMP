@@ -30,7 +30,6 @@
 			}
 		},
 		onLoad(option) {
-			console.log(option)
 			this.isFlag = parseInt(option.isFlag)
 			if(option.isFlag == 0){
 				this.address = JSON.parse(decodeURIComponent(option.address))

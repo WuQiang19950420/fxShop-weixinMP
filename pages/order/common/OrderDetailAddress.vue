@@ -3,7 +3,7 @@
 		<div class = "address-left">
 			<span>{{goodsDetail.consignee}}</span>
 			<span>{{goodsDetail.phone}}</span>
-			<address>{{ads}}</address>
+			<address>{{address}}</address>
 		</div>
 	</article>
 </template>

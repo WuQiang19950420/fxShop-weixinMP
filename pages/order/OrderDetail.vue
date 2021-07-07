@@ -25,7 +25,6 @@
 			PayFixed
 		},
 		onLoad(option) {
-			console.log(option)
 			this.goodsDetail = JSON.parse(option.goodsDetail)
 			this.index = option.index
 		},

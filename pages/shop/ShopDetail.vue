@@ -77,12 +77,12 @@
 		},
 		methods: {
 			onShareAppMessage() {
-				 return {
-				  title:this.shareMsg.title,
-				  desc: this.shareMsg.desc,
-				  path: `/pages/shop/ShopDetail?id=${this.myUid}`,
-				  imageUrl:this.shareMsg.imgUrl
-				 }
+			 return {
+				 title:this.shareMsg.title,
+				 desc: this.shareMsg.desc,
+				 path: `/pages/shop/ShopDetail?id=${this.myUid}`,
+				 imageUrl:this.shareMsg.imgUrl
+			 }
 			},
 			buy() {
 				this.show = true
@@ -96,7 +96,6 @@
 					gid: 1
 				}
 				getShops(data).then(res => {
-					console.log(res)
 					let goodsDetail = JSON.parse(res.data.wdDetail)
 					this.goods = JSON.parse(res.data.wGoods)
 					this.goodsDetailImg = this.goods.resv2.split('|')

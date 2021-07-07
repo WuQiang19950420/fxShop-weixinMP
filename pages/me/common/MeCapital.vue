@@ -39,7 +39,7 @@
 						url:`/pages/me/Captial?userData=${userData}`
 					})
 				}else{
-					uni.redirectTo({
+					uni.navigateTo({
 						url:'../login/MpWxLogin'
 					})
 				}

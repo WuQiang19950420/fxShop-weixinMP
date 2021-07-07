@@ -21,7 +21,6 @@
 		},
 		onLoad(option) {
 			this.userData = JSON.parse(option.userData)
-			console.log(this.userData)
 		},
 		methods:{
 			upDataUser(price){

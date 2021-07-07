@@ -7,7 +7,8 @@ const store =  new Vuex.Store({
   state: {
 	tabsIndex:null,
 	addressBack:null,
-	uid:null
+	uid:null,
+	IsGetShopData:null
   },
 
   mutations: {

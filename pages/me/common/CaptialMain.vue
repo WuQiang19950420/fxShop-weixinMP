@@ -122,7 +122,6 @@
 						}
 					}
 				}
-				console.log(price,this.name)
 				if(price < 1){
 					this.$refs.uToast.show({title:'金额必须大于1'})
 					this.show = true

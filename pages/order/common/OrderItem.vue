@@ -114,10 +114,8 @@
 				if(this.payState == "已完成" || this.payState == "等待发货" || this.payState == "退款失败"){
 					this.applyRefund()
 				}else if(this.payState == "等待收货"){
-					console.log('确认收货')
 					this.confirmReceipt()
 				}else if(this.payState == "等待付款"){
-					console.log('去支付1')
 					this.againPay()
 				}
 			},
@@ -129,7 +127,7 @@
 					if(res.data.code === 1){
 						this.$refs.uToast.show({title:res.data.msg})
 					}else if(res.data.code === -2){
-						this.$refs.uToast.show({title: '登陆失效,正在重新登陆至首页'})
+						this.$refs.uToast.show({title: '登陆失效,正在跳转'})
 					}else{
 						this.$refs.uToast.show({title:res.data.msg})
 					}
@@ -151,7 +149,7 @@
 						console.log(1)
 						this.$refs.uToast.show({title: '取消成功'})
 					}else if(res.data.code === -2){
-						this.$refs.uToast.show({title: '登陆失效,正在重新登陆至首页'})
+						this.$refs.uToast.show({title: '登陆失效,正在跳转'})
 					}else{
 						this.$refs.uToast.show({title: '取消失败'})
 					}
@@ -177,7 +175,7 @@
 					}else if(res.data.code === -1){
 						this.$refs.uToast.show({title:res.data.msg})
 					}else if(res.data.code === -2){
-						this.$refs.uToast.show({title: '登陆失效,正在重新登陆至首页'})
+						this.$refs.uToast.show({title: '登陆失效,正在跳转'})
 					}
 				})
 			},
@@ -187,7 +185,7 @@
 				}
 				againPay(data).then(res => {
 					if(res.data.code === -2){
-						this.$refs.uToast.show({title: '登陆失效,正在重新登陆至首页'})
+						this.$refs.uToast.show({title: '登陆失效,正在跳转'})
 					}else if(res.data.code === 1){
 						wx.requestPayment({
 							timeStamp: res.data.timeStamp,

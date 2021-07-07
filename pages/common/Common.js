@@ -8,7 +8,6 @@ export function getMpWxToken(loginErro,loginSuccess){
 	wx.getUserProfile({
 		desc:'授权登录',
 		success(res){
-			console.log(res)
 			let data = {
 				nickName:res.userInfo.nickName,
 				headUrl:res.userInfo.avatarUrl
