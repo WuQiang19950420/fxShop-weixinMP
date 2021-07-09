@@ -67,6 +67,10 @@
 		},
 		onShow(){
 			if(wx.getStorageSync('token')){
+				uni.showLoading({
+					title: '加载中',
+					mask:'true'
+				})
 				uni.getStorageSync('indexs')?this.tabIndex = uni.getStorageSync('indexs'):this.tabIndex = 0
 				this.currentPage = 1
 				this.orderItem = []
@@ -74,7 +78,9 @@
 				this.isEnd = false
 				this.emptyShow = false
 				this.status = 'loadmore'
-				this.getOrder()
+				setTimeout(() => {
+					this.getOrder()
+				},200)
 			}else{
 				this.isLogin = false
 				uni.navigateTo({
@@ -121,7 +127,12 @@
 				this.isEnd = false
 				this.emptyShow = false
 				this.status = 'loadmore';
-				this.getOrder()
+				uni.showLoading({
+					title: '加载中'
+				})
+				setTimeout(() => {
+					this.getOrder()
+				},200)
 			},
 			goOrderDetail(index){
 				let orderItem = JSON.stringify(this.orderItem[index])
@@ -163,6 +174,7 @@
 						}
 					}
 					this.currentPage++
+					uni.hideLoading()
 				})
 			}
 		}

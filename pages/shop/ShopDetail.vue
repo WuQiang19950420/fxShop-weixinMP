@@ -66,6 +66,11 @@
 				}
 			}
 		},
+		created() {
+			uni.showLoading({
+			    title: '加载中'
+			});	
+		},
 		onLoad(options) {
 			if(options.id){
 				this.$store.commit('getUid',options.id)
@@ -110,22 +115,29 @@
 						this.shareMsg.desc = res.data.desc
 						this.shareMsg.title = res.data.title
 					}
+					uni.hideLoading()
 				})
 			},
 			getAddress() {
 				getAddress().then(res => {
-					let address = JSON.parse(res.data.address)
-					if (address) {
-						//如果右有默认地址就显示默认 没有就显示第一个
-						for (let i = 0; i < address.length; i++) {
-							if (address[i].isDefault == 1) {
-								this.address = address[i].address
-							} else {
-								this.address = address[0].address
+					if(res.data.code === 1){
+						let address = JSON.parse(res.data.address)
+						if (address) {
+							//如果右有默认地址就显示默认 没有就显示第一个
+							for (let i = 0; i < address.length; i++) {
+								if (address[i].isDefault == 1) {
+									this.address = address[i].address
+								} else {
+									this.address = address[0].address
+								}
 							}
+						} else {
+							this.address.text = '地址栏占无地址'
 						}
-					} else {
-						this.address.text = '地址栏占无地址'
+					}else if(res.data.code === -2){
+						this.$refs.uToast.show({title: '登陆失效,正在跳转'})
+					}else{
+						this.$refs.uToast.show({title:res.data.msg})
 					}
 				})
 			}
