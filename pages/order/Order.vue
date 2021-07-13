@@ -24,7 +24,7 @@
 			<order-item @click.native = "goOrderDetail(index)" 
 						v-for = "(item,index) in orderItem" :product = "item" :key = "item.id"
 						@updataOrderItem = "updataOrderItem" @deleteItem = "deleteItem" 
-						:tabIndex = "tabIndex" :index = "index"></order-item>
+						:tabIndex = "tabIndex" :index = "index" @changeTabsIndex = "changeTabsIndex"></order-item>
 		</article>
 		<article v-if = "tabIndex == 4" >
 			<order-item @click.native = "goOrderDetail(index)"
@@ -54,7 +54,7 @@
 		},
 		data(){
 			return{
-				tabIndex:0 ,//页面切换 默认0
+				tabIndex:null ,//页面切换 默认0
 				orderItem:[],
 				currentPage:1,
 				pageSize:5,
@@ -67,20 +67,20 @@
 		},
 		onShow(){
 			if(wx.getStorageSync('token')){
+				console.log(this.tabIndex)
 				uni.showLoading({
 					title: '加载中',
 					mask:'true'
 				})
 				uni.getStorageSync('indexs')?this.tabIndex = uni.getStorageSync('indexs'):this.tabIndex = 0
+				this.tabIndex = this.$store.state.OrderTagsIndex
 				this.currentPage = 1
 				this.orderItem = []
 				this.show = false
 				this.isEnd = false
 				this.emptyShow = false
 				this.status = 'loadmore'
-				setTimeout(() => {
-					this.getOrder()
-				},200)
+				this.getOrder()
 			}else{
 				this.isLogin = false
 				uni.navigateTo({
@@ -121,23 +121,31 @@
 			//tab标签栏切换
 			tabsClick(index){
 				this.tabIndex = index
+				this.initData()
+				uni.showLoading({
+					title: '加载中'
+				})
+				this.getOrder()
+			},
+			//页面初始化
+			initData(){
 				this.currentPage = 1
 				this.orderItem = []
 				this.show = false
 				this.isEnd = false
 				this.emptyShow = false
-				this.status = 'loadmore';
-				uni.showLoading({
-					title: '加载中'
-				})
-				setTimeout(() => {
-					this.getOrder()
-				},200)
+				this.status = 'loadmore'
+			},
+			changeTabsIndex(){
+				this.tabIndex = 4
+				this.initData()
+				this.getOrder()
 			},
 			goOrderDetail(index){
 				let orderItem = JSON.stringify(this.orderItem[index])
+				this.$store.commit('getTagsIndex',this.tabIndex)
 				uni.navigateTo({
-					url:`/pages/order/OrderDetail?goodsDetail=${orderItem}&index=${this.tabIndex}`
+					url:`/pages/order/OrderDetail?goodsDetail=${orderItem}`
 				})
 			},
 			getOrder(){

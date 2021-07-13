@@ -6,12 +6,12 @@
 				<div v-if = "chooseCollect"></div>
 				<img v-else src = "/static/image/me/circle-choose.png">
 			</div>
-			<img :src = "goodsDetail.resv1 || goodsDetail.image">
+			<img :src = "goodsData.goodsDetail.resv1 || goodsData.image">
 			<div class = "shop-main-detail-right">
-				<p>{{goods.name || goodsDetail.name}}</p>
+				<p>{{goodsData.goods.name || goodsData.name}}</p>
 				<div class = "shop-main-detail-price">
-					<span>￥<text>{{goodsDetail.selingprice}}</text></span>
-					<span>x{{userCounts || goodsDetail.count}}</span>
+					<span>￥<text>{{goodsData.goodsDetail.selingprice || goodsData.selingprice}}</text></span>
+					<span>x{{goodsData.userCount || goodsData.count}}</span>
 				</div>
 			</div>
 		</div>
@@ -25,25 +25,11 @@
 				type:Boolean,
 				default:false
 			},
-			goods: {
+			goodsData: {
 				type: Object,
 				default () {
 					return {}
 				}
-			},
-			goodsDetail: {
-				type: Object,
-				default () {
-					return {}
-				}
-			},
-			goodsDetailImg:{
-				type:String,
-				default:''
-			},
-			userCount:{
-				type:Number,
-				default:0
 			}
 		},
 		computed:{
@@ -52,13 +38,6 @@
 					return false
 				}else{
 					return true
-				}
-			},
-			userCounts(){
-				if(this.userCount){
-					return this.userCount.toString()
-				}else{
-					return null
 				}
 			}
 		},

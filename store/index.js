@@ -8,7 +8,8 @@ const store =  new Vuex.Store({
 	tabsIndex:null,
 	addressBack:null,
 	uid:null,
-	IsGetShopData:null
+	goodsData:{},
+	OrderTagsIndex:0
   },
 
   mutations: {
@@ -20,6 +21,18 @@ const store =  new Vuex.Store({
 	  },
 	  getUid(state,uid){
 		  state.uid = uid
+	  },
+	  //存储首页数据
+	  getShopDetail(state,goodsData){
+	  		  state.goodsData = goodsData
+	  },
+	  //更新首页数据的商品数量
+	  updataShopDetailCount(state,userCount){
+			state.goodsData.userCount = userCount
+	  },
+	  //订单标签栏存储索引值
+	  getTagsIndex(state,OrderTagsIndex){
+	  		state.OrderTagsIndex = OrderTagsIndex
 	  }
   },
   actions: {

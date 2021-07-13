@@ -34,11 +34,5 @@
 </script>
 
 <style lang = "scss" scoped>
-	/* #ifdef H5*/
-	.tabs{
-		position: sticky;
-		top: 44px;
-		z-index: 1;
-	}
-	/* #endif */
+
 </style>

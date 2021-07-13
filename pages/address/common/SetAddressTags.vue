@@ -32,9 +32,25 @@
 				activeIndex:-1
 			}
 		},
+		props:{
+			tagsDate:{
+				type:Object,
+				default(){
+					return{}
+				}
+			}
+		},
 		computed:{
 			check(){
 				return this.checked?1:0
+			}
+		},
+		watch:{
+			tagsDate(newValue){
+				if(newValue){
+					this.checked = Boolean(parseInt(newValue.isDefault))
+					this.activeIndex = parseInt(newValue.activeIndex)
+				}
 			}
 		},
 		methods:{

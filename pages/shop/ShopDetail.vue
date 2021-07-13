@@ -72,10 +72,14 @@
 			});	
 		},
 		onLoad(options) {
+			console.log(options)
 			if(options.id){
 				this.$store.commit('getUid',options.id)
 			}
 			this.getShops()
+		},
+		onShow() {
+			console.log(1)
 			if(wx.getStorageSync('token')){
 				this.getAddress() 
 			}

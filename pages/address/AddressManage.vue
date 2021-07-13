@@ -16,22 +16,12 @@
 		components:{
 			AddressItem
 		},
-		onLoad(option){
-			if(option.goodsDetail && option.goods && option.userCount){
-				this.goodsDetail = JSON.parse(decodeURIComponent(option.goodsDetail));
-				this.goods = JSON.parse(decodeURIComponent(option.goods));
-				this.userCount = parseInt(option.userCount)
-			}
-		},
 		created() {
 			this.getAddress()
 		},
 		data(){
 			return{
-				address:[],
-				goodsDetail:null,
-				goods:null,
-				userCount:null
+				address:[]
 			}
 		},
 		methods:{
@@ -41,49 +31,34 @@
 						url:"/pages/me/Me"
 					})
 				}else{
-					let goodsDetail = encodeURIComponent(JSON.stringify(this.goodsDetail))
-					let goods = encodeURIComponent(JSON.stringify(this.goods))
-					let userCount = parseInt(this.userCount)
 					uni.navigateTo({
-						url: `/pages/order/WriteOrder?goodsDetail=${goodsDetail}&goods=${goods}&userCount=${userCount}`
+						url: `/pages/order/WriteOrder`
 					})
 				}
 			},
 			getAddress(){
-				let data = {
-					token:uni.getStorageSync('token')
-				}
-				getAddress(data).then( res => {
+				getAddress().then( res => {
 					this.address = JSON.parse(res.data.address)
 				})
 			},
 			//修改地址
 			setAddress(index){
 				let address = encodeURIComponent(JSON.stringify(this.address[index]))
-				let goodsDetail = encodeURIComponent(JSON.stringify(this.goodsDetail))
-				let goods = encodeURIComponent(JSON.stringify(this.goods))
-				let userCount = parseInt(this.userCount)
 				uni.navigateTo({
-					url:`/pages/address/SetAddress?address=${address}&isFlag=0&goodsDetail=${goodsDetail}&goods=${goods}&userCount=${userCount}`
+					url:`/pages/address/SetAddress?address=${address}&isFlag=0&activeIndex=${this.address[index].type}&isDefault=${this.address[index].isDefault}`
 				})
 			},
 			//新建地址
 			goSetAddress(){
 				let address = encodeURIComponent(JSON.stringify(this.address[0]))
-				let goodsDetail = encodeURIComponent(JSON.stringify(this.goodsDetail))
-				let goods = encodeURIComponent(JSON.stringify(this.goods))
-				let userCount = parseInt(this.userCount)
 				uni.navigateTo({
-					url:`/pages/address/SetAddress?isFlag=1&address=${address}&goodsDetail=${goodsDetail}&goods=${goods}&userCount=${userCount}`
+					url:`/pages/address/SetAddress?isFlag=1&address=${address}`
 				})
 			},
 			chooseAddress(index){
 				if(this.$store.state.addressBack != 1){
-					let goodsDetail = encodeURIComponent(JSON.stringify(this.goodsDetail))
-					let goods = encodeURIComponent(JSON.stringify(this.goods))
-					let userCount = parseInt(this.userCount)
 					uni.navigateTo({
-						url: `/pages/order/WriteOrder?goodsDetail=${goodsDetail}&goods=${goods}&userCount=${userCount}&addressIndex=${index}`
+						url: `/pages/order/WriteOrder?addressIndex=${index}`
 					})
 				}
 			}

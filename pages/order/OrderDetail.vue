@@ -4,7 +4,7 @@
 		<order-detail-state :goodsDetail = "goodsDetail"></order-detail-state>
 		<order-detail-address :goodsDetail = "goodsDetail"></order-detail-address>
 		<view class = "goods-information">
-			<goods-information  :goodsDetail = "goodsDetail"></goods-information>
+			<goods-information  :goodsData = "goodsDetail"></goods-information>
 		</view>
 		<order-detail-order-information :goodsDetail = "goodsDetail"></order-detail-order-information>
 	</main>

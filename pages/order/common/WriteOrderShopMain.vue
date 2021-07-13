@@ -1,6 +1,6 @@
 <template>
 	<article class = "write-order-shop-main">
-		<goods-information :goods = "goods" :goodsDetail = "goodsDetail" :userCount = "userCount"></goods-information>
+		<goods-information :goodsData = "goodsData"></goods-information>
 		<div class = "shop-main-other">
 			<section>
 				<span>购买数量</span>
@@ -11,7 +11,7 @@
 					<span class = "incream" @click = "incream" v-else>
 						<img src = "/static/image/shop/no-incream.png">
 					</span>
-					<input  ref = "countInput" v-model = "count" @focus = "inputBlur" @keyup = "addInput" type="number">
+					<input  ref = "countInput" v-model = "count" @focus = "inputBlur" type="number">
 					<span class = "add" @click = "add" v-if = "addActive">
 						<img src = "/static/image/shop/add.png">
 					</span>
@@ -34,8 +34,7 @@
 			</section> -->
 			<section class = "shop-main-other-input">
 				<span>订单备注</span>
-				<input type = "text" placeholder="选填" v-model="remark" 
-					   @focus = "addKeyBordHeight" @blur = "minKeyBordHeight">
+				<input type = "text" placeholder="选填" v-model="remark">
 			</section>
 		</div>
 		<footer>
@@ -48,43 +47,28 @@
 	import GoodsInformation from '../../common/GoodsInformation.vue'
 	export default{
 		props: {
-			goods: {
+			goodsData: {
 				type: Object,
 				default () {
 					return {}
 				}
-			},
-			goodsDetail: {
-				type: Object,
-				default () {
-					return {}
-				}
-			},
-			userCount:{
-				type:Number,
-				default:0
 			}
 		},
 		components:{
 			GoodsInformation
 		},
 		created() {
-			this.count = this.userCount
-		},
-		watch:{
-			userCount(newValue){
-				this.count = newValue
-			}
+			this.count = this.$store.state.goodsData.userCount
 		},
 		mounted() {
-			if(this.userCount > 1){
+			if(this.count > 1){
 				this.increamActive = true
 			}
 		},
 		computed:{
 			allPrice(){
-				if(this.goodsDetail){
-					let allPrice = this.goodsDetail.selingprice * this.userCount
+				if(this.goodsData){
+					let allPrice = this.goodsData.goodsDetail.selingprice * this.count
 					return allPrice.toFixed(2)
 				}
 			}
@@ -95,43 +79,31 @@
 				increamActive:false,
 				addActive:true,
 				remark:'',
-				count:''
+				count:null,
+			}
+		},
+		watch:{
+			count(newValue){
+				this.$store.commit('updataShopDetailCount',newValue)
 			}
 		},
 		methods:{
-			addKeyBordHeight(){
-				this.$emit('addKeyBordHeight')
-			},
-			minKeyBordHeight(){
-				this.$emit('minKeyBordHeight')
-			},
 			shopsChoose(){
 				this.isActive?this.isActive = false:this.isActive = true
 			},
-			pay(){
-				if(this.userCount == 0){
-					this.$refs.uToast.show({title:'输入商品数'})
-				}else{
-					uni.navigateTo({
-						url:"/pages/order/WriteOrder"
-					})
-				}
-			},
 			incream(){
-				this.$emit('incream')
-				if(this.userCount <= 2){
+				if(this.count < 2){
 					this.increamActive = false
+				}else{
+					this.count--
 				}
 			},
 			add(){
-				this.$emit('add')
 				this.increamActive = true
+				this.count++
 			},
 			inputBlur(){
-				this.userCount = this.userCount
-			},
-			addInput(){
-				this.$emit('addInput',this.count)
+				this.count = this.count
 			}
 		}
 	}

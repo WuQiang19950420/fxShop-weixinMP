@@ -1,7 +1,7 @@
 <template>
 	<article class = "service-information">
 		<h5>退款信息</h5>
-		<goods-information :goodsDetail = "serviceDetail"></goods-information>
+		<goods-information :goodsData = "serviceDetail"></goods-information>
 		<div class = "service-information-top">
 			<section>
 				<h6>订单编号</h6><span>{{serviceDetail.orderId}}</span>

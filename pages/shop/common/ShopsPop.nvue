@@ -84,7 +84,7 @@
 			return {
 				index: 0,
 				shopsCount: 1,
-				increamActive: true,
+				increamActive: false,
 				addActive: true,
 				show: false,
 				productDetail:{}
@@ -108,15 +108,18 @@
 							title: '输入商品数'
 						})
 					} else {
-						let goodsDetail = encodeURIComponent(JSON.stringify(this.productDetail))
-						let goods = encodeURIComponent(JSON.stringify(this.goods))
-						let userCount = parseInt(this.shopsCount)
+						let goodsData = {
+							goodsDetail:this.productDetail,
+							goods:this.goods,
+							userCount:this.shopsCount
+						}
+						this.$store.commit('getShopDetail',goodsData)
 						uni.navigateTo({
-							url: `/pages/order/WriteOrder?goodsDetail=${goodsDetail}&goods=${goods}&userCount=${userCount}`
+							url: `/pages/order/WriteOrder`
 						})
 					}
 				}else{
-					uni.redirectTo({
+					uni.navigateTo({
 						url:'../login/MpWxLogin'
 					})
 				}

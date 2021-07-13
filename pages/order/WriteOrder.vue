@@ -1,13 +1,10 @@
 <template>
-	<main class = "write-order" :class = "{'add-keybord-height':isAddKeybordHeight}">
+	<main class = "write-order">
 		<u-navbar title="填写订单" :custom-back = "writeOrderBack"></u-navbar>
 		<address-item @click.native = "chooseAddress" :address="address">
 			 <div slot = "address-title" class = "address-title"></div>
 		</address-item>
-		<write-order-shop-main ref = "writeOrderShopMain" :goodsDetail = "goodsDetail" 
-							:goods = "goods" :userCount = "userCount" @incream = "incream" 
-							@add = "add" @addInput = "addInput" @addKeyBordHeight = "addKeyBordHeight"
-							@minKeyBordHeight = "minKeyBordHeight"></write-order-shop-main>
+		<write-order-shop-main ref = "writeOrderShopMain" :goodsData = "goodsData"></write-order-shop-main>
 		<pay-fixed class = "pay-bottom">
 			<button @click = "commitOrder">提交订单</button>
 		</pay-fixed>
@@ -28,19 +25,13 @@
 	import {placeOrder} from '../network/Order.js'
 	export default{
 		onLoad(option){
-			console.log(option)
-			this.goodsDetail = JSON.parse(decodeURIComponent(option.goodsDetail));
-			this.goods = JSON.parse(decodeURIComponent(option.goods));
-			this.userCount =  parseInt(option.userCount)
 			if(option.addressIndex){
 				this.addressIndex = option.addressIndex
 			}
 		},
 		data(){
 			return {
-				goodsDetail:null,
-				goods:null,
-				userCount:null,
+				goodsData:{},
 				address:{},
 				show:false,
 				content: '你还没有收货地址,赶快设置一下吧',
@@ -56,31 +47,12 @@
 		},
 		created() {
 			this.getAddress()
+			this.getVueXShopDetail()
 		},
 		methods:{
-			addKeyBordHeight(){
-				let phone = this.isAndroidOrIOS()
-				if(phone === 'android'){
-					this.isAddKeybordHeight = true
-				}
-			},
-			minKeyBordHeight(){
-				let phone = this.isAndroidOrIOS()
-				if(phone === 'android'){
-					this.isAddKeybordHeight = false
-				}
-			},
-			isAndroidOrIOS() {
-				var u = navigator.userAgent;
-				var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
-				var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
-				if (isAndroid) {
-					return "android"
-				}
-				if (isiOS) {
-					return "ios"
-				}
-				return false
+			//获取vuex里的数据
+			getVueXShopDetail(){
+				this.goodsData = this.$store.state.goodsData
 			},
 			writeOrderBack(){
 				uni.switchTab({
@@ -93,11 +65,8 @@
 				})
 			},
 			confirm(){
-				let goodsDetail = encodeURIComponent(JSON.stringify(this.goodsDetail))
-				let goods = encodeURIComponent(JSON.stringify(this.goods))
-				let userCount = parseInt(this.userCount)
 				uni.navigateTo({
-					url:`/pages/address/SetAddress?isFlag=1&goodsDetail=${goodsDetail}&goods=${goods}&userCount=${userCount}`
+					url:`/pages/address/SetAddress?isFlag=1`
 				})
 			},
 			getAddress(){
@@ -114,34 +83,12 @@
 					}
 				})
 			},
-			// 子组件传递过来减库存事件
-			incream(){
-				this.userCount--
-				if(this.userCount < 1){
-					this.userCount = 1
-				}
-			},
-			//子组件传递过来加库存事件
-			add(){
-				this.userCount++
-				// console.log(this.userCount)
-				// if(this.userCount > this.goodsDetail.count){
-				// 	this.userCount =  this.goodsDetail.count
-				// }
-			},
-			addInput(count){
-				if(count == ''){
-					this.userCount = 1
-				}else{
-					this.userCount = parseInt(count)
-				}
-			},
 			//提交订单
 			commitOrder(){
 				let remark = this.$refs.writeOrderShopMain.remark
 				let data = {
-					gdid:this.goodsDetail.id,
-					count:this.userCount,
+					gdid:this.goodsData.goodsDetail.id,
+					count:this.$store.state.goodsData.userCount,
 					addId:this.address.id,
 					remark:remark,
 					tranType:1
@@ -182,12 +129,9 @@
 				})
 			},
 			chooseAddress(){
-				let goodsDetail = encodeURIComponent(JSON.stringify(this.goodsDetail))
-				let goods = encodeURIComponent(JSON.stringify(this.goods))
-				let userCount = parseInt(this.userCount)
 				this.$store.commit('getAddressBack',2)
 				uni.navigateTo({
-					url:`/pages/address/AddressManage?goodsDetail=${goodsDetail}&goods=${goods}&userCount=${userCount}`
+					url:`/pages/address/AddressManage`
 				})
 			}
 		}

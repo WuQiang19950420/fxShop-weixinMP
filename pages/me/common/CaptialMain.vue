@@ -60,19 +60,19 @@
 		},
 		computed:{
 			amt(){
-				if(this.userDatas.amt){
+				if(this.userDatas.amt == 0 || this.userDatas.amt){
 					let amt = this.userDatas.amt.toString().split('.')
 					return amt
 				}
 			},
 			settlementAmt(){
-				if(this.userDatas.settlementAmt){
+				if(this.userDatas.settlementAmt == 0 || this.userDatas.settlementAmt){
 					let settlementAmt = this.userDatas.settlementAmt.toString().split('.')
 					return settlementAmt
 				}
 			},
 			frozenAmt(){
-				if(this.userDatas.frozenAmt){
+				if(this.userDatas.frozenAmt == 0 || this.userDatas.frozenAmt){
 					let frozenAmt = this.userDatas.frozenAmt.toString().split('.')
 					return frozenAmt
 				}

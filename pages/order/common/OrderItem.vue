@@ -68,7 +68,7 @@
 					return '已完成'
 				}else if(isDeliver == 1 && payStatus == 2 && !refundStatus){
 					this.payStateColor = '#303133'
-					this.leftBtn = '查看物流'
+					this.leftBtn = ''
 					this.rightBtn = '确认收货'
 					return '等待收货'
 				}else if(payStatus == 1 && isDeliver == 0 && !refundStatus){
@@ -96,6 +96,11 @@
 					this.leftBtn = ''
 					this.rightBtn = ''
 					return '退款成功'
+				}else if(refundStatus == 3){
+					this.payStateColor = '#303133'
+					this.leftBtn = ''
+					this.rightBtn = '申请退款'
+					return '退款失败'
 				}
 			}
 		},
@@ -103,8 +108,6 @@
 			leftBtnClick(){
 				if(this.payState == "等待收货"){
 					console.log('查看物流')
-				}else if(this.payState == "等待收货"){
-					console.log('申请退款')
 				}else if(this.payState == "等待付款"){
 					console.log('取消订单')
 					this.cancelOrder()
@@ -125,6 +128,7 @@
 				}
 				confirmReceipt(data).then(res => {
 					if(res.data.code === 1){
+						this.$emit('changeTabsIndex')
 						this.$refs.uToast.show({title:res.data.msg})
 					}else if(res.data.code === -2){
 						this.$refs.uToast.show({title: '登陆失效,正在跳转'})
@@ -172,6 +176,11 @@
 				applyRefund(data).then(res => {
 					if(res.data.code === 1){
 						this.$refs.uToast.show({title: '退款申请成功,等待管理员审核'})
+						setTimeout(()=> {
+							uni.navigateTo({
+								url:'../../service/Service'
+							})
+						},300)
 					}else if(res.data.code === -1){
 						this.$refs.uToast.show({title:res.data.msg})
 					}else if(res.data.code === -2){

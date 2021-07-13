@@ -4,7 +4,7 @@
 			<div slot = "right" style = "padding-right: 10rpx;" @click = "deleteAddress" >删除</div>
 		</u-navbar>
 		<set-address-main ref = "setAddressMain" :addr = "address" :isFlag = "isFlag"></set-address-main>
-		<set-address-tags ref = "setAddressTags"></set-address-tags>
+		<set-address-tags ref = "setAddressTags" :tagsDate = "tags"></set-address-tags>
 		<button class = "set-address-btn" @click="SetAddress">保存收货地址</button>
 		<u-toast ref="uToast" />
 	</main>
@@ -14,7 +14,7 @@
 	import SetAddressMain from './common/SetAddressMain.vue'
 	import SetAddressTags from './common/SetAddressTags.vue'
 	
-	import {setAddress,deleteAddress,reviseAddress} from '../network/getAddress.js'
+	import {setAddress,deleteAddress} from '../network/getAddress.js'
 	export default{
 		components:{
 			SetAddressMain,
@@ -24,9 +24,10 @@
 			return{
 				address:{},
 				isFlag:1 ,//默认保存地址  0 修改地址
-				goodsDetail:null,
-				goods:null,
-				userCount:null
+				tags:{
+					activeIndex:null,
+					isDefault:null
+				}
 			}
 		},
 		onLoad(option) {
@@ -34,34 +35,27 @@
 			if(option.isFlag == 0){
 				this.address = JSON.parse(decodeURIComponent(option.address))
 			}
-			if(option.goodsDetail && option.goods && option.userCount){
-				this.goodsDetail = JSON.parse(decodeURIComponent(option.goodsDetail));
-				this.goods = JSON.parse(decodeURIComponent(option.goods));
-				this.userCount = parseInt(option.userCount)
+			if(option.activeIndex && option.isDefault){
+				this.tags.activeIndex = option.activeIndex
+				this.tags.isDefault = option.isDefault
 			}
 		},
 		methods:{
 			setAddressBack(){
-				let goodsDetail = encodeURIComponent(JSON.stringify(this.goodsDetail))
-				let goods = encodeURIComponent(JSON.stringify(this.goods))
-				let userCount = parseInt(this.userCount)
 				uni.navigateTo({
-					url:`/pages/address/AddressManage?goodsDetail=${goodsDetail}&goods=${goods}&userCount=${userCount}`
+					url:`/pages/address/AddressManage`
 				})
 			},
 			deleteAddress(){
 				let data = {
 					id:this.address.id
 				}
-				let goodsDetail = encodeURIComponent(JSON.stringify(this.goodsDetail))
-				let goods = encodeURIComponent(JSON.stringify(this.goods))
-				let userCount = parseInt(this.userCount)
 				deleteAddress(data).then(res => {
 					if(res.data.code === 1){
 						this.$refs.uToast.show({title:'删除成功'})
 						setTimeout(() => {
 							uni.navigateTo({
-								url:`/pages/address/AddressManage?goodsDetail=${goodsDetail}&goods=${goods}&userCount=${userCount}`
+								url:`/pages/address/AddressManage`
 							})
 						},500)
 					}
@@ -77,9 +71,6 @@
 					this.$refs.uToast.show({title:'请输入地址'})
 				}else{
 					let arry = (address.city + ' ' + address.street).split(' ')
-					let goodsDetail = encodeURIComponent(JSON.stringify(this.goodsDetail))
-					let goods = encodeURIComponent(JSON.stringify(this.goods))
-					let userCount = parseInt(this.userCount)
 					if(this.isFlag == 1){
 						let data = {
 							address:arry,
@@ -92,7 +83,7 @@
 							this.$refs.uToast.show({title:'保存成功'})
 							setTimeout(() => {
 								uni.navigateTo({
-									url:`/pages/address/AddressManage?goodsDetail=${goodsDetail}&goods=${goods}&userCount=${userCount}`
+									url:`/pages/address/AddressManage`
 								})
 							},500)
 						})
@@ -105,11 +96,11 @@
 							isDefault:this.$refs.setAddressTags.check,
 							type:this.$refs.setAddressTags.activeIndex
 						}
-						reviseAddress(data).then(res => {
+						setAddress(data).then(res => {
 							this.$refs.uToast.show({title:'修改成功'})
 							setTimeout(() => {
 								uni.navigateTo({
-									url:`/pages/address/AddressManage?goodsDetail=${goodsDetail}&goods=${goods}&userCount=${userCount}`
+									url:`/pages/address/AddressManage`
 								})
 							},500)
 						})

@@ -27,7 +27,7 @@
 		<u-toast ref="uToast" />
 		<u-modal v-model="show"  title = "填写快递单号" 
 				:show-cancel-button = "true" @confirm="confirm">
-			<input class = "post-number-input" type = "number" v-model="postNumber" :focus = "true"/>
+			<input class = "post-number-input" type = "number" v-model="postNumber"/>
 		</u-modal>
 	</section>
 </template>
