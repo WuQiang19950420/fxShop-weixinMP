@@ -67,12 +67,10 @@
 		},
 		onShow(){
 			if(wx.getStorageSync('token')){
-				console.log(this.tabIndex)
 				uni.showLoading({
 					title: '加载中',
 					mask:'true'
 				})
-				uni.getStorageSync('indexs')?this.tabIndex = uni.getStorageSync('indexs'):this.tabIndex = 0
 				this.tabIndex = this.$store.state.OrderTagsIndex
 				this.currentPage = 1
 				this.orderItem = []
@@ -91,12 +89,6 @@
 				},1000)
 			}
 
-		},
-		onHide(){
-			//页面消失 删除缓存
-			if(uni.getStorageSync('indexs') || uni.getStorageSync('indexs') == 0){
-				uni.removeStorageSync('indexs')
-			}
 		},
 		onReachBottom(){
 			if(!this.isEnd){
@@ -121,6 +113,7 @@
 			//tab标签栏切换
 			tabsClick(index){
 				this.tabIndex = index
+				this.$store.commit('getTagsIndex',index)
 				this.initData()
 				uni.showLoading({
 					title: '加载中'

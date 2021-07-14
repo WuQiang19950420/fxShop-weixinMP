@@ -1,7 +1,7 @@
 <template>
 	<main class = "write-order">
 		<u-navbar title="填写订单" :custom-back = "writeOrderBack"></u-navbar>
-		<address-item @click.native = "chooseAddress" :address="address">
+		<address-item @click.native = "chooseAddress" :address="address" v-if = "showAddress">
 			 <div slot = "address-title" class = "address-title"></div>
 		</address-item>
 		<write-order-shop-main ref = "writeOrderShopMain" :goodsData = "goodsData"></write-order-shop-main>
@@ -37,7 +37,8 @@
 				content: '你还没有收货地址,赶快设置一下吧',
 				addressIndex:0  ,//选择地址下标
 				remark:'',
-				isAddKeybordHeight:false
+				isAddKeybordHeight:false,
+				showAddress:false
 			}
 		},
 		components:{
@@ -78,6 +79,7 @@
 						if(address.length === 0){
 							this.show = true
 						}else{
+							this.showAddress = true
 							this.address = address[this.addressIndex]
 						}
 					}
@@ -116,14 +118,14 @@
 			},
 			//支付成功的回调函数
 			paySuccess(){
-				uni.setStorageSync('indexs',2);
+				this.$store.commit('getTagsIndex',2)
 				uni.switchTab({
 					url:"/pages/order/Order"
 				})
 			},
 			//支付失败的回调函数
 			payErro(){
-				uni.setStorageSync('indexs', 1);
+				this.$store.commit('getTagsIndex',1)
 				uni.switchTab({
 					url:"/pages/order/Order"
 				})

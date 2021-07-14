@@ -84,7 +84,11 @@
 		},
 		watch:{
 			count(newValue){
-				this.$store.commit('updataShopDetailCount',newValue)
+				if(!newValue){
+					this.$store.commit('updataShopDetailCount','0')
+				}else{
+					this.$store.commit('updataShopDetailCount',this.count)
+				}
 			}
 		},
 		methods:{

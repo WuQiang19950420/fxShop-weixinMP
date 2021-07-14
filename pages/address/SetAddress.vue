@@ -1,7 +1,7 @@
 <template>
 	<main class = "set-address">
 		<u-navbar title="编辑收货地址" :custom-back = "setAddressBack">
-			<div slot = "right" style = "padding-right: 10rpx;" @click = "deleteAddress" >删除</div>
+			<div slot = "right" style = "padding-right: 10rpx;" @click = "deleteAddress" v-if = "!isFlag">删除</div>
 		</u-navbar>
 		<set-address-main ref = "setAddressMain" :addr = "address" :isFlag = "isFlag"></set-address-main>
 		<set-address-tags ref = "setAddressTags" :tagsDate = "tags"></set-address-tags>

@@ -29,7 +29,7 @@
 	export default{
 		methods:{
 			goWaitPay(){
-				uni.setStorageSync('indexs', 1);
+				this.$store.commit('getTagsIndex',1)
 				uni.switchTab({
 					url:'/pages/order/Order',
 					success: (res) => {
@@ -40,13 +40,13 @@
 				})
 			},
 			goWaitTakeOver(){
-				uni.setStorageSync('indexs', 3);
+				this.$store.commit('getTagsIndex',1)
 				uni.switchTab({
 					url:'/pages/order/Order'
 				})
 			},
 			goWaitOrderAssess(){
-				uni.setStorageSync('indexs', 4);
+				this.$store.commit('getTagsIndex',4)
 				uni.switchTab({
 					url:'/pages/order/Order'
 				})
@@ -63,7 +63,7 @@
 				}	
 			},
 			goAllOrder(){
-				uni.setStorageSync('indexs', 0);
+				this.$store.commit('getTagsIndex',0)
 				uni.switchTab({
 					url:'/pages/order/Order'
 				})
